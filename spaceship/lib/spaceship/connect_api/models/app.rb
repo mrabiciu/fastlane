@@ -210,8 +210,10 @@ module Spaceship
 
         if app_store_version
           if version_string != app_store_version.version_string
+            puts("[DEBUG] Changing version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
             attributes = { versionString: version_string }
             app_store_version.update(client: client, attributes: attributes)
+            puts("[DEBUG] Did change version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
             return true
           end
           return false
