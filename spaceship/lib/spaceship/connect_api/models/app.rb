@@ -206,21 +206,26 @@ module Spaceship
       # @return (Bool) Was something changed?
       def ensure_version!(version_string, platform: nil, client: nil)
         client ||= Spaceship::ConnectAPI
+        UI.message("[DEBUG] Fetchilng app store version")
         app_store_version = get_edit_app_store_version(client: client, platform: platform)
+        UI.message("[DEBUG] Did fetch app store version '#{app_store_version}'")
 
         if app_store_version
           if version_string != app_store_version.version_string
-            puts("[DEBUG] Changing version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
+            UI.message("[DEBUG] Changing version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
             attributes = { versionString: version_string }
             app_store_version.update(client: client, attributes: attributes)
-            puts("[DEBUG] Did change version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
+            UI.message("[DEBUG] Did change version number of app '#{name}' from '#{app_store_version.version_string}' to '#{version_string}'")
             return true
           end
+          UI.message("[DEBUG] Nothing to be done")
           return false
         else
+          
           attributes = { versionString: version_string, platform: platform }
+          UI.message("[DEBUG] No version found posting app store version '#{version_string}'")
           client.post_app_store_version(app_id: id, attributes: attributes)
-
+          UI.message("[DEBUG] Did post app version")
           return true
         end
       end

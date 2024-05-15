@@ -124,6 +124,7 @@ module Deliver
       app = Deliver.cache[:app]
 
       platform = Spaceship::ConnectAPI::Platform.map(options[:platform])
+      UI.message("[Debug] Calling ensure_version! with app_version: '#{app_version}', platform: '#{platform}'")
       changed = app.ensure_version!(app_version, platform: platform)
 
       if changed
